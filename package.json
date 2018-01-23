@@ -1,0 +1,16 @@
+{
+  "name": "api",
+  "version": "1.1.0",
+  "description": "This task is only for testing API's",
+  "author": "Zaianb Hammami",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.5.8",
+    "morgan": "^1.7.0",
+    "request": "^2.74.0"
+  }
+}
