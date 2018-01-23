@@ -1,18 +1,18 @@
 var jwt = require('jwt-simple');
 var Q = require('q');
-var User = require('../user/userModle.js')
+var User = require('./userModle.js')
 
 module.exports.handleUsers = {
   // add user to data base
   postUser: function(req, res) {
     var user = {
-      firstName: req.body.firstName;
-      secondName: req.body.secondName;
-      username: req.body.username;
-      password: req.body.password;
-      email: req.body.email;
-      phoneNumber: req.body.phoneNumber;
-      address: req.body.address;
+      firstName: req.body.firstName,
+      secondName: req.body.secondName,
+      username: req.body.username,
+      password: req.body.password,
+      email: req.body.email,
+      phoneNumber: req.body.phoneNumber,
+      address: req.body.address
     }
 
     // check to see if user already exists

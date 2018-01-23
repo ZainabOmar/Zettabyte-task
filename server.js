@@ -7,7 +7,7 @@ var UsersController = require('./users/userController.js');
 var PhotoController = require('./photos/photoController.js')
 
 //middleware
-app.use(express.static(__dirname + './'));
+app.use(express.static(__dirname + '/'));
 app.use(bodyParser.json());
 
 // Connect to Mongoose
