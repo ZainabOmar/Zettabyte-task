@@ -17,8 +17,8 @@ var db = mongoose.connection;
 
 app.get('/api/users', UsersController.handleUsers.getUsers)
 app.post('/api/users', UsersController.handleUsers.postUser)
-app.get('/api/photos', UsersController.handleUsers.getPhotos)
-app.post('/api/photos', UsersController.handleUsers.getPhoto)
+// app.get('/api/photos', UsersController.handleUsers.getPhotos)
+// app.post('/api/photos', UsersController.handleUsers.getPhoto)
 
 app.listen(process.env.PORT || 3000);
 console.log('Running on port 3000...');

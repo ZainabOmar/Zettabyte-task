@@ -1,75 +1,44 @@
 var jwt = require('jwt-simple');
-var User = require('./userModule.js');
 var Q = require('q');
-var Company = require('../Company/companyModule.js')
+var User = require('../user/userModle.js')
 
 module.exports.handleUsers = {
   // add user to data base
-  signup: function(req, res) {
-
-    var username = req.body.username;
-    var password = req.body.password;
-    var email = req.body.email;
+  postUser: function(req, res) {
+    var user = {
+      firstName: req.body.firstName;
+      secondName: req.body.secondName;
+      username: req.body.username;
+      password: req.body.password;
+      email: req.body.email;
+      phoneNumber: req.body.phoneNumber;
+      address: req.body.address;
+    }
 
     // check to see if user already exists
-    User.findOne({username: username})
+    User.findOne({username: user.username})
     .exec(function (err, user) {
       if (user) {
         res.json('User already exist!');
       } else {
           // make a new user if not one
-          return User.create({
-            username: username,
-            password: password,
-            email:email
-          }, function (err, newUser) {
+          return User.create(user, function (err, newUser) {
               // create token to send back for auth
               if(err){
                 res.json(err);
               } else {
-                var token = jwt.encode(user, 'secret');
-                res.json({token: token, user: newUser}); 
-              }     
-            });
-        }
-      });
-
-    // check to see if user already exists
-    User.findOne({username: username})
-    .exec(function (err, user) {
-      if (user) {
-        res.json('User already exist!');
-      } else {
-          // make a new user if not one
-          Company.findOne({code:code})
-          .exec(function(err,c) {
-            if(err) throw err;
-            if(c){
-              return User.create({
-                username: username,
-                password: password,
-                email:email
-              }, function (err, newUser) {
-              // create token to send back for auth
-              if(err){
-                res.json(err);
-              } else {
-                var token = jwt.encode(user, 'secret');
-                c.users.push(newUser._id)
-                c.save(function(err,c){
-                  if(err) {throw err};
-                  res.json({token : token ,_id : newUser._id , username : username})
+                var token = jwt.encode(newUser, 'secret');
+                User.save(function(err, success){
+                  if (err) throw err;
+                  else{
+                    res.json({token: token, user: newUser, success})
+                  }
                 })
               }   
             });
-            } else {
-              res.status(404).json("wrong input");
-            }
-          }) 
         }
-      });
-  }
-},
+      }) 
+  },
 
   // get user in data base
   getUsers: function(req, res) {
