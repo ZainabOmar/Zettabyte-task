@@ -73,20 +73,23 @@ editUser: function(req, res) {
 
 //delete the user:
 deleteUser : function(req,res){
-  User.findOne({_id: req.params.userId})
-  .then(function(user) {
-    if (!user) {
-     res.status(500).send("user not found")
-   }else {
-     User.remove(user, function (err) {
-      if (err){
-        res.json(err)
-      } else{
-        res.json(user)
-      };
-    });
-   }
- })
+ User.findByIdAndRemove(req.params.userId, function(err, user){
+   if (err) {
+    res.send("user not found");
+  }
+  else{
+    res.status(200).send(user);
+  }
+});
+},
+
+findOneUser: function(req, res) {
+  User.findById(req.params.id, function(err, user){
+    if (err) throw err;
+    else{
+      res.json(user)
+    }
+  })
 }
 
 }

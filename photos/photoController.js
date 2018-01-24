@@ -1,4 +1,5 @@
-var Photo = require('./photoModle.js')
+var Photo = require('./photoModle.js');
+var User = require('../users/userModle.js');
 
 module.exports.handlePhotos = {
   // add photo to data base
@@ -7,23 +8,28 @@ module.exports.handlePhotos = {
       photoTitle: req.body.photoTitle,
       url: req.body.url
     }
-
-    // check to see if photo already exists
-    Photo.findOne({photoTitle: creatOne.photoTitle})
-    .exec(function (err, photo) {
-      if (photo) {
-        res.json('Photo already exist!');
-      } else {
-          // make a new photo if not one
-          return Photo.create(creatOne, function (err, newPhoto) {
-            if(err){
-              res.json(err);
-            } else {
-              res.json({photo: newPhoto})
-            }
-          })
-        }  
-      });
+    User.findOne({_id: req.body.userId})
+    .then(function(user) {
+      if (!user) {
+       res.status(500).send("user not found")
+     }else {
+      Photo.create(creatOne, function(err, newPhoto){
+        if(err){
+         res.status(500).send("something went wrong");
+       }else{
+        user.photos.push(newPhoto);
+        console.log("this is after pushing to user photos array", user)
+        user.save(function(err, result) {
+          if (err) {
+           res.status(500).send("something went wrong");
+         }else {
+           res.json(result) 
+         }
+       })
+      }
+    })
+    }
+  })
   },
 
   // get all photos from database
@@ -57,21 +63,14 @@ module.exports.handlePhotos = {
   },
 
   deletePhoto : function(req,res){
-    Photo.findOne({_id: req.params.photoId})
-    .then(function(photo) {
-      if (!photo) {
-       res.status(500).send("photo not found")
-     }else {
-       Photo.remove(photo, function (err) {
-        if (err){
-          res.json(err)
-        } else{
-          res.json(photo)
-        };
-      });
-     }
-
-   })
+    Photo.findByIdAndRemove(req.params.photoId, function(err, photo){
+     if (err) {
+      res.send("photo not found");
+    }
+    else{
+      res.status(200).send(photo);
+    }
+  });
   }
 
 }

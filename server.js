@@ -18,6 +18,7 @@ var db = mongoose.connection;
 //users API's:
 app.get('/api/users', UsersController.handleUsers.getUsers);
 app.post('/api/users', UsersController.handleUsers.postUser);
+app.get('/api/users/:id', UsersController.handleUsers.findOneUser);
 app.put('/api/users/edit/:id', UsersController.handleUsers.editUser);
 app.delete('/api/users/delete/:userId',UsersController.handleUsers.deleteUser);
 

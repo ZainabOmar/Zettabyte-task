@@ -28,7 +28,11 @@ phoneNumber:{
 address:{
   type: String,
   required: false
-}
+},
+photos:[{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'photo'
+  }]
 });
 
 var user = mongoose.model('user', userSchema);
