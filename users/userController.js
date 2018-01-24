@@ -44,6 +44,49 @@ module.exports.handleUsers = {
         res.json(users);
       }
     });
+  },
+
+  editUser: function(req, res) {
+    User.findById(req.params.id, function(err, user){
+      if (err) throw err;
+      else{
+        //update it or leave it as it is if not:
+        user.firstName = req.body.firstName || user.firstName;
+        user.lastName = req.body.lastName || user.lastName;
+        user.username = req.body.username || user.username;
+        user.password = req.body.password || user.password;
+        user.email = req.body.email || user.email;
+        user.phoneNumber = req.body.phoneNumber || user.phoneNumber;
+        user.address = req.body.address || user.address;
+        //then save it to database again:
+        user.save(function(err, updated){
+          console.log(updated);
+          if (err) throw err;
+          else{
+            res.json(updated);
+          }
+        })
+      }
+    })
+  },
+
+  deleteUser : function(req,res){
+    User.findOne({_id: req.params.userId})
+    .then(function(user) {
+      console.log(user)
+      if (!user) {
+       res.status(500).send("user not found")
+     }else {
+       User.remove(user, function (err) {
+        if (err){
+          res.json(err)
+        } else{
+          res.json(user)
+        };
+      });
+     }
+
+   })
   }
 
 }
