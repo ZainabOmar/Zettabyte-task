@@ -5,9 +5,9 @@ var User = require('./userModle.js')
 module.exports.handleUsers = {
   // add user to data base
   postUser: function(req, res) {
-    var user = {
+    var creatOne = {
       firstName: req.body.firstName,
-      secondName: req.body.secondName,
+      lastName: req.body.lastName,
       username: req.body.username,
       password: req.body.password,
       email: req.body.email,
@@ -16,28 +16,23 @@ module.exports.handleUsers = {
     }
 
     // check to see if user already exists
-    User.findOne({username: user.username})
+    User.findOne({username: creatOne.username})
     .exec(function (err, user) {
       if (user) {
         res.json('User already exist!');
       } else {
           // make a new user if not one
-          return User.create(user, function (err, newUser) {
+          return User.create(creatOne, function (err, newUser) {
               // create token to send back for auth
               if(err){
                 res.json(err);
               } else {
                 var token = jwt.encode(newUser, 'secret');
-                User.save(function(err, success){
-                  if (err) throw err;
-                  else{
-                    res.json({token: token, user: newUser, success})
-                  }
-                })
-              }   
-            });
-        }
-      }) 
+                res.json({token: token, user: newUser})
+              }
+            })
+        }  
+      });
   },
 
   // get user in data base
