@@ -21,8 +21,11 @@ app.post('/api/users', UsersController.handleUsers.postUser);
 app.put('/api/users/edit/:id', UsersController.handleUsers.editUser);
 app.delete('/api/users/delete/:userId',UsersController.handleUsers.deleteUser);
 
-// app.get('/api/photos', UsersController.handleUsers.getPhotos)
-// app.post('/api/photos', UsersController.handleUsers.getPhoto)
+//photos API's:
+app.get('/api/photos', PhotoController.handlePhotos.getPhotos);
+app.post('/api/photos', PhotoController.handlePhotos.postPhoto);
+app.put('/api/photos/edit/:id', PhotoController.handlePhotos.editPhoto);
+app.delete('/api/photos/delete/:photoId',PhotoController.handlePhotos.deletePhoto);
 
 app.listen(process.env.PORT || 3000);
 console.log('Running on port 3000...');

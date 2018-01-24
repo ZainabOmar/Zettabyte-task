@@ -5,11 +5,14 @@ var photoSchema = new mongoose.Schema({
 		type:String,
 		required:true 
 	},
-	created_at: Date,
-	updated_at: Date,
-	type:{
+	url: {
 		type:String,
-		required:true 
+		required:true
+	},
+	created_at: {
+		type: Date, 
+		required: true, 
+		default: Date.now
 	}
 });
 

@@ -35,21 +35,22 @@ module.exports.handleUsers = {
       });
   },
 
-  // get user in data base
-  getUsers: function(req, res) {
-    User.find({}, function(err, users){
-      if(err){
-        res.json(err);
-      } else {
-        res.json(users);
-      }
-    });
-  },
+// get all users from database
+getUsers: function(req, res) {
+  User.find({}, function(err, users){
+    if(err){
+      res.json(err);
+    } else {
+      res.json(users);
+    }
+  });
+},
 
-  editUser: function(req, res) {
-    User.findById(req.params.id, function(err, user){
-      if (err) throw err;
-      else{
+//edit the user or update it:
+editUser: function(req, res) {
+  User.findById(req.params.id, function(err, user){
+    if (err) throw err;
+    else{
         //update it or leave it as it is if not:
         user.firstName = req.body.firstName || user.firstName;
         user.lastName = req.body.lastName || user.lastName;
@@ -68,25 +69,24 @@ module.exports.handleUsers = {
         })
       }
     })
-  },
+},
 
-  deleteUser : function(req,res){
-    User.findOne({_id: req.params.userId})
-    .then(function(user) {
-      console.log(user)
-      if (!user) {
-       res.status(500).send("user not found")
-     }else {
-       User.remove(user, function (err) {
-        if (err){
-          res.json(err)
-        } else{
-          res.json(user)
-        };
-      });
-     }
-
-   })
-  }
+//delete the user:
+deleteUser : function(req,res){
+  User.findOne({_id: req.params.userId})
+  .then(function(user) {
+    if (!user) {
+     res.status(500).send("user not found")
+   }else {
+     User.remove(user, function (err) {
+      if (err){
+        res.json(err)
+      } else{
+        res.json(user)
+      };
+    });
+   }
+ })
+}
 
 }
